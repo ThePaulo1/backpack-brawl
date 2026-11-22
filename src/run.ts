@@ -45,6 +45,17 @@ export function buyItem(state: RunState, offerIndex: number): RunState {
   return { ...state, gold: state.gold - getItem(itemId).price, shop, backpack, nextUid: state.nextUid + 1 };
 }
 
+/** Moves or swaps an item between two backpack slots. */
+export function moveBackpackItem(state: RunState, fromIndex: number, toIndex: number): RunState {
+  if (fromIndex === toIndex) return state;
+  const backpack = [...state.backpack];
+  const fromItem = backpack[fromIndex];
+  const toItem = backpack[toIndex];
+  backpack[fromIndex] = toItem;
+  backpack[toIndex] = fromItem;
+  return { ...state, backpack };
+}
+
 export type RunOutcome = "victory" | "defeat";
 
 /** `victory` / `defeat` once the run is over, otherwise `null`. */

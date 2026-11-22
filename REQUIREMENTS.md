@@ -10,6 +10,10 @@ Gold never becomes negative, an item I pay for always ends up in my backpack, an
 
 As a player, I want to arrange my backpack. I can select an item, see that it is selected, and move it to another slot. Moving onto an occupied slot swaps the two items. The interface shows which moves are possible, and I can cancel a selection.
 
+- Added atomic `moveBackpackItem` and swap run logic for valid backpack slots.
+- Updated the backpack UI to highlight a selected item, enable valid destination slots, show swap/move guidance, and provide a cancel-selection action.
+- Suggested commit: `feat(b2): add backpack item arrangement`
+
 ## B3 — Status effects (15%)
 
 As a player, I want two new effects in battle:
