@@ -9,7 +9,7 @@
   "remoteUser": "node",
   "customizations": {
     "vscode": {
-      "extensions": ["esbenp.prettier-vscode", "bradlc.vscode-tailwindcss"],
+      "extensions": ["esbenp.prettier-vscode", "bradlc.vscode-tailwindcss", "yzane.markdown-pdf"],
       "settings": {
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.formatOnSave": true,
