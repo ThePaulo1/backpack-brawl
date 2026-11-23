@@ -1,6 +1,7 @@
 import { TICK_SECONDS, MAX_TICKS } from "../battle";
 import { describeEffects, getItem } from "../items";
 import { EFFECT_HELP, STATUS_HELP } from "../rules";
+import { ITEM_SETS } from "../sets";
 import type { BattleEvent, BattleEventKind, BattleReplay, Fighter, FighterSnapshot, Side } from "../types";
 
 interface BattleViewProps {
@@ -97,6 +98,8 @@ const EVENT_COLOUR: Partial<Record<BattleEventKind, string>> = {
   poison: "text-purple-300",
   poisonDamage: "text-purple-300",
   heal: "text-green-300",
+  burn: "text-orange-300",
+  burnDamage: "text-orange-300",
 };
 
 function LogLine({ event }: { event: BattleEvent }) {
@@ -126,7 +129,7 @@ interface FighterPanelProps {
 }
 
 function FighterPanel({ side, icon, fighter, snapshot }: FighterPanelProps) {
-  const { hp, maxHp, block, poison } = snapshot;
+  const { hp, maxHp, block, poison, burn } = snapshot;
   const knockedOut = hp <= 0;
 
   return (
@@ -148,6 +151,20 @@ function FighterPanel({ side, icon, fighter, snapshot }: FighterPanelProps) {
           ☠️ Poison: {poison}
         </p>
       )}
+      {burn > 0 && (
+        <p title={STATUS_HELP.burn} className="cursor-help text-sm text-orange-300">
+          🔥 Burn: {burn}
+        </p>
+      )}
+      {fighter.activeSets.length > 0 && (
+        <ul className="flex flex-wrap gap-1 text-xs" aria-label="Active set bonuses">
+          {fighter.activeSets.map((setId) => (
+            <li key={setId} title={ITEM_SETS[setId].bonus} className="rounded bg-gold/15 px-1.5 py-0.5 text-gold">
+              {ITEM_SETS[setId].icon} {ITEM_SETS[setId].name}: {ITEM_SETS[setId].bonus}
+            </li>
+          ))}
+        </ul>
+      )}
 
       <ul className="flex flex-wrap gap-1" aria-label="Items">
         {fighter.items.map((item, index) => (
@@ -155,11 +172,13 @@ function FighterPanel({ side, icon, fighter, snapshot }: FighterPanelProps) {
             key={index}
             title={[
               item.name,
+              ...(item.set ? [`${ITEM_SETS[item.set].name} set: ${ITEM_SETS[item.set].bonus}`] : []),
               ...describeEffects(item.effects).map(({ effect, label }) => `${label}: ${EFFECT_HELP[effect]}`),
             ].join("\n")}
             className="rounded bg-ink/50 px-1.5 py-0.5 text-xl"
           >
             {item.icon}
+            {item.set && <span className="ml-1 rounded bg-gold/20 px-0.5 text-[10px] text-gold">{ITEM_SETS[item.set].icon}</span>}
           </li>
         ))}
       </ul>

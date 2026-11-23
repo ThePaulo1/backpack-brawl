@@ -10,8 +10,8 @@ Gold never becomes negative, an item I pay for always ends up in my backpack, an
 
 As a player, I want to arrange my backpack. I can select an item, see that it is selected, and move it to another slot. Moving onto an occupied slot swaps the two items. The interface shows which moves are possible, and I can cancel a selection.
 
-- Added atomic `moveBackpackItem` and swap run logic for valid backpack slots.
-- Updated the backpack UI to highlight a selected item, enable valid destination slots, show swap/move guidance, and provide a cancel-selection action.
+>- Added atomic `moveBackpackItem` and swap run logic for valid backpack slots.
+>- Updated the backpack UI to highlight a selected item, enable valid destination slots, show swap/move guidance, and provide a cancel-selection action.
 
 ## B3 — Status effects (15%)
 
@@ -22,9 +22,9 @@ As a player, I want two new effects in battle:
 
 The catalog contains **at least 3 items per effect**, new or existing items changed, and the shop offers them. Opponents may use them. Poison and heal are shown in the battle view (for example a poison counter per fighter), in the combat log and in the rules panel and tooltips. Your team chooses the exact tick interval and values. They must be deterministic and explained in the interface.
 
-- Added three poison and three healing items to the catalog, automatically available in the shop and equipped by later opponents.
-- Poison stacks add 1 HP damage per stack every 2 battle ticks, ignoring block; stacks persist, and newly applied stacks count on an immediately due pulse. Healing restores HP on item fire up to max HP.
-- Added poison counters, effect tooltips, combat-log events, rules-panel explanations and focused battle tests.
+>- Added three poison and three healing items to the catalog, automatically available in the shop and equipped by later opponents.
+>- Poison stacks add 1 HP damage per stack every 2 battle ticks, ignoring block; stacks persist, and newly applied stacks count on an immediately due pulse. Healing restores HP on item fire up to max HP.
+>- Added poison counters, effect tooltips, combat-log events and rules-panel explanations.
 
 ## B4 — Item sets (20%)
 
@@ -39,6 +39,11 @@ The Fire set adds a new status, **Burn**, a damage-over-time effect that is clea
 Your team chooses the exact tick, stack, damage and decay values. They must be deterministic and explained in the rules panel. Burn is shown in the battle view and the combat log.
 
 B3 and B4 do not depend on each other. If B3 is not built, Burn is the first status effect, and the other set bonuses can boost damage or block instead.
+
+>- Added the Fire set (Ember Sword, Cinder Bomb, Flame Brazier) and Guardian set (Oak Buckler, Pot Lid, Spiked Shield); two or more instances activate a set bonus, and duplicate copies count.
+>- Fire items add Burn, which ticks every 0.5 s for 2 damage per stack, is absorbed by block first, and decays by 1 stack each tick. New stacks start ticking on the following tick. The Fire bonus reduces those items' cooldown by 1 tick; Guardian grants 2 starting block.
+>- Added set badges in the shop and battle, active bonus summaries for both fighters and the player's backpack, and added set items to opponent loadouts.
+>- Documented the set and Burn decisions in the rules panel and README
 
 ## B5 — Resilient matchmaking (10%)
 

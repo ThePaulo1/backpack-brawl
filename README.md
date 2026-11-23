@@ -42,26 +42,31 @@ Battle time runs in **ticks of 0.5 s**:
 - A fighter at 0 HP is knocked out. If both fall in the same tick, the hero loses.
 - A battle lasts at most **60 ticks (30 s)**. If time runs out, the fighter with the higher share of their max HP wins. A tie counts as a loss for the hero.
 
-The battle screen shows HP and block for both fighters, their items, a timer, and a combat log. Hover over values to see an explanation of each rule.
+The battle screen shows HP, block and active status effects for both fighters, their items, active set bonuses, a timer, and a combat log. Hover over values and item badges to see an explanation of each rule.
 
 ### Item catalog
 
-| Item | Price | Cooldown (ticks) | Effect |
-|---|---:|---:|---|
-| 🗡️ Chipped Dagger | 2 | 4 | 3 damage |
-| 🏹 Hunting Bow | 4 | 4 | 5 damage |
-| 🪓 Iron Cleaver | 5 | 8 | 12 damage |
-| 🛡️ Oak Buckler | 3 | 5 | +4 block |
-| 🍳 Pot Lid | 2 | 3 | +2 block |
-| ⚔️ Spiked Shield | 4 | 6 | 3 damage, +3 block |
-| 🐍 Viper Tooth | 3 | 4 | +1 poison stack |
-| 🧪 Venom Flask | 5 | 6 | +2 poison stacks |
-| 🪡 Plague Needle | 4 | 5 | 2 damage, +1 poison stack |
-| 🌿 Healing Herb | 3 | 4 | Restore 4 HP |
-| 🩹 Field Kit | 5 | 7 | Restore 7 HP |
-| 🍵 Restorative Tonic | 4 | 5 | Restore 3 HP, +2 block |
+| Item | Price | Cooldown (ticks) | Effect | Set |
+|---|---:|---:|---|---|
+| 🗡️ Chipped Dagger | 2 | 4 | 3 damage | — |
+| 🏹 Hunting Bow | 4 | 4 | 5 damage | — |
+| 🪓 Iron Cleaver | 5 | 8 | 12 damage | — |
+| 🛡️ Oak Buckler | 3 | 5 | +4 block | Guardian |
+| 🍳 Pot Lid | 2 | 3 | +2 block | Guardian |
+| ⚔️ Spiked Shield | 4 | 6 | 3 damage, +3 block | Guardian |
+| 🐍 Viper Tooth | 3 | 4 | +1 poison stack | — |
+| 🧪 Venom Flask | 5 | 6 | +2 poison stacks | — |
+| 🪡 Plague Needle | 4 | 5 | 2 damage, +1 poison stack | — |
+| 🌿 Healing Herb | 3 | 4 | Restore 4 HP | — |
+| 🩹 Field Kit | 5 | 7 | Restore 7 HP | — |
+| 🍵 Restorative Tonic | 4 | 5 | Restore 3 HP, +2 block | — |
+| 🔥 Ember Sword | 4 | 3 | 4 damage, +1 Burn | Fire |
+| 💣 Cinder Bomb | 5 | 3 | 5 damage, +1 Burn | Fire |
+| 🪔 Flame Brazier | 4 | 3 | +3 block, +1 Burn | Fire |
 
 Poison stacks on the target and ticks every 2 battle ticks (1 second), dealing 1 HP per stack while ignoring block. Stacks last for the battle; stacks added on a poison-pulse tick count immediately. Healing restores HP immediately, up to max HP. The "How it works" panel in the shop summarises these rules in the game itself.
+
+Burn ticks every battle tick (0.5 seconds), dealing 2 damage per stack; block absorbs that damage first, then Burn loses 1 stack. It starts ticking on the tick after it is applied. Fire items have a 3-tick cooldown, so they add Burn more often than poison items. Collect 2 or more items from a set (duplicate copies count) to activate its bonus: Fire items recharge 1 tick sooner, and Guardian fighters start battle with 2 extra block. The bonuses apply to opponents too.
 
 ## Current starter features
 
@@ -69,8 +74,8 @@ Poison stacks on the target and ticks every 2 battle ticks (1 second), dealing 1
 - A run with rounds, gold, lives and wins, ending in victory or defeat.
 - A seeded shop with buying.
 - A fixed 2×3 backpack grid with item tooltips.
-- A deterministic battle simulation with damage and block.
-- A replayed battle view with HP and block bars, a timer, a combat log and a skip button.
+- A deterministic battle simulation with damage, block, poison, healing, Burn and set bonuses.
+- A replayed battle view with HP, block and status indicators, set badges and bonuses, a timer, a combat log and a skip button.
 - A delayed local opponent API with success and failure responses.
 - Tooltips and a rules panel explaining every mechanic.
 - A responsive React interface styled with Tailwind CSS.

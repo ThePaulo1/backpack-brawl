@@ -6,10 +6,10 @@
 export const OPPONENTS = [
   { id: "mossback-hermit", name: "Mossback Hermit", icon: "🐢", hp: 25, items: ["chipped-dagger", "pot-lid"] },
   { id: "grave-tinker", name: "Grave Tinker", icon: "🦴", hp: 36, items: ["hunting-bow", "viper-tooth", "oak-buckler"] },
-  { id: "tollgate-ogre", name: "Tollgate Ogre", icon: "👹", hp: 44, items: ["hunting-bow", "healing-herb", "chipped-dagger", "oak-buckler"] },
-  { id: "rusted-knight", name: "Rusted Knight", icon: "🪖", hp: 46, items: ["iron-cleaver", "venom-flask", "chipped-dagger", "oak-buckler", "pot-lid"] },
-  { id: "pit-gladiator", name: "Pit Gladiator", icon: "🦁", hp: 50, items: ["iron-cleaver", "hunting-bow", "field-kit", "oak-buckler", "pot-lid"] },
-  { id: "ash-golem", name: "Ash Golem", icon: "🗿", hp: 56, items: ["iron-cleaver", "hunting-bow", "spiked-shield", "plague-needle", "oak-buckler"] },
+  { id: "tollgate-ogre", name: "Tollgate Ogre", icon: "👹", hp: 44, items: ["hunting-bow", "healing-herb", "chipped-dagger", "oak-buckler", "ember-sword", "cinder-bomb"] },
+  { id: "rusted-knight", name: "Rusted Knight", icon: "🪖", hp: 46, items: ["iron-cleaver", "venom-flask", "chipped-dagger", "oak-buckler", "pot-lid", "flame-brazier"] },
+  { id: "pit-gladiator", name: "Pit Gladiator", icon: "🦁", hp: 50, items: ["iron-cleaver", "hunting-bow", "field-kit", "oak-buckler", "pot-lid", "ember-sword"] },
+  { id: "ash-golem", name: "Ash Golem", icon: "🗿", hp: 56, items: ["iron-cleaver", "hunting-bow", "spiked-shield", "plague-needle", "ember-sword", "cinder-bomb"] },
   { id: "hollow-king", name: "Hollow King", icon: "👑", hp: 64, items: ["iron-cleaver", "venom-flask", "healing-herb", "spiked-shield", "oak-buckler", "pot-lid"] },
 ];
 

@@ -3,7 +3,10 @@ export interface ItemEffects {
   block?: number;
   poison?: number;
   heal?: number;
+  burn?: number;
 }
+
+export type ItemSetId = "fire" | "guardian";
 
 export interface ItemDef {
   id: string;
@@ -13,6 +16,7 @@ export interface ItemDef {
   /** Cooldown in battle ticks (1 tick = 0.5 s). */
   cooldown: number;
   effects: ItemEffects;
+  set?: ItemSetId;
 }
 
 /** A concrete item the player owns; several instances may share one `itemId`. */
@@ -58,9 +62,10 @@ export interface FighterSnapshot {
   maxHp: number;
   block: number;
   poison: number;
+  burn: number;
 }
 
-export type BattleEventKind = "damage" | "block" | "poison" | "poisonDamage" | "heal";
+export type BattleEventKind = "damage" | "block" | "poison" | "poisonDamage" | "heal" | "burn" | "burnDamage";
 
 export interface BattleEvent {
   tick: number;
@@ -97,6 +102,7 @@ export interface FighterItem {
   icon: string;
   cooldown: number;
   effects: ItemEffects;
+  set?: ItemSetId;
 }
 
 /** Everything `simulateBattle` needs to know about one side. */
@@ -104,6 +110,7 @@ export interface Fighter {
   name: string;
   maxHp: number;
   items: FighterItem[];
+  activeSets: ItemSetId[];
 }
 
 /** A simulated battle being replayed frame by frame. */

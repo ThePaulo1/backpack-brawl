@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { TICK_SECONDS } from "../battle";
 import { describeEffects } from "../items";
 import { COOLDOWN_HELP, EFFECT_HELP } from "../rules";
+import { ITEM_SETS } from "../sets";
 import type { ItemDef } from "../types";
 
 interface ItemCardProps {
@@ -19,6 +20,11 @@ export function ItemCard({ item, children }: ItemCardProps) {
         </span>
         <div className="min-w-0 flex-1">
           <h3 className="truncate font-display font-bold">{item.name}</h3>
+          {item.set && (
+            <span className="mt-1 inline-block rounded bg-gold/15 px-1.5 py-0.5 text-xs text-gold" title={ITEM_SETS[item.set].bonus}>
+              {ITEM_SETS[item.set].icon} {ITEM_SETS[item.set].name} set
+            </span>
+          )}
         </div>
       </div>
       <ul className="flex flex-wrap gap-x-3 gap-y-1 text-sm">
