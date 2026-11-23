@@ -12,7 +12,6 @@ As a player, I want to arrange my backpack. I can select an item, see that it is
 
 - Added atomic `moveBackpackItem` and swap run logic for valid backpack slots.
 - Updated the backpack UI to highlight a selected item, enable valid destination slots, show swap/move guidance, and provide a cancel-selection action.
-- Suggested commit: `feat(b2): add backpack item arrangement`
 
 ## B3 — Status effects (15%)
 
@@ -22,6 +21,10 @@ As a player, I want two new effects in battle:
 - **Heal** restores the fighter's own HP, but never above their max HP.
 
 The catalog contains **at least 3 items per effect**, new or existing items changed, and the shop offers them. Opponents may use them. Poison and heal are shown in the battle view (for example a poison counter per fighter), in the combat log and in the rules panel and tooltips. Your team chooses the exact tick interval and values. They must be deterministic and explained in the interface.
+
+- Added three poison and three healing items to the catalog, automatically available in the shop and equipped by later opponents.
+- Poison stacks add 1 HP damage per stack every 2 battle ticks, ignoring block; stacks persist, and newly applied stacks count on an immediately due pulse. Healing restores HP on item fire up to max HP.
+- Added poison counters, effect tooltips, combat-log events, rules-panel explanations and focused battle tests.
 
 ## B4 — Item sets (20%)
 

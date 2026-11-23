@@ -1,6 +1,6 @@
 import { TICK_SECONDS, MAX_TICKS } from "../battle";
-import { getItem } from "../items";
-import { STATUS_HELP } from "../rules";
+import { describeEffects, getItem } from "../items";
+import { EFFECT_HELP, STATUS_HELP } from "../rules";
 import type { BattleEvent, BattleEventKind, BattleReplay, Fighter, FighterSnapshot, Side } from "../types";
 
 interface BattleViewProps {
@@ -94,6 +94,9 @@ const LOG_ROW = "grid grid-cols-[1fr_auto_1fr] items-start gap-2";
 /** Text colour per event: damage red, everything else neutral. */
 const EVENT_COLOUR: Partial<Record<BattleEventKind, string>> = {
   damage: "text-life",
+  poison: "text-purple-300",
+  poisonDamage: "text-purple-300",
+  heal: "text-green-300",
 };
 
 function LogLine({ event }: { event: BattleEvent }) {
@@ -123,7 +126,7 @@ interface FighterPanelProps {
 }
 
 function FighterPanel({ side, icon, fighter, snapshot }: FighterPanelProps) {
-  const { hp, maxHp, block } = snapshot;
+  const { hp, maxHp, block, poison } = snapshot;
   const knockedOut = hp <= 0;
 
   return (
@@ -140,10 +143,22 @@ function FighterPanel({ side, icon, fighter, snapshot }: FighterPanelProps) {
 
       <Bar label="HP" value={hp} max={maxHp} text={`${hp} / ${maxHp}`} colour="bg-life" help={STATUS_HELP.hp} />
       <Bar label="Block" value={block} max={maxHp} text={`🛡️ ${block}`} colour="bg-block" help={STATUS_HELP.block} />
+      {poison > 0 && (
+        <p title={STATUS_HELP.poison} className="cursor-help text-sm text-purple-300">
+          ☠️ Poison: {poison}
+        </p>
+      )}
 
       <ul className="flex flex-wrap gap-1" aria-label="Items">
         {fighter.items.map((item, index) => (
-          <li key={index} title={item.name} className="rounded bg-ink/50 px-1.5 py-0.5 text-xl">
+          <li
+            key={index}
+            title={[
+              item.name,
+              ...describeEffects(item.effects).map(({ effect, label }) => `${label}: ${EFFECT_HELP[effect]}`),
+            ].join("\n")}
+            className="rounded bg-ink/50 px-1.5 py-0.5 text-xl"
+          >
             {item.icon}
           </li>
         ))}

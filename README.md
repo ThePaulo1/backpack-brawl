@@ -54,8 +54,14 @@ The battle screen shows HP and block for both fighters, their items, a timer, an
 | 🛡️ Oak Buckler | 3 | 5 | +4 block |
 | 🍳 Pot Lid | 2 | 3 | +2 block |
 | ⚔️ Spiked Shield | 4 | 6 | 3 damage, +3 block |
+| 🐍 Viper Tooth | 3 | 4 | +1 poison stack |
+| 🧪 Venom Flask | 5 | 6 | +2 poison stacks |
+| 🪡 Plague Needle | 4 | 5 | 2 damage, +1 poison stack |
+| 🌿 Healing Herb | 3 | 4 | Restore 4 HP |
+| 🩹 Field Kit | 5 | 7 | Restore 7 HP |
+| 🍵 Restorative Tonic | 4 | 5 | Restore 3 HP, +2 block |
 
-Items have no sets and no other effects. The "How it works" panel in the shop summarises these rules in the game itself.
+Poison stacks on the target and ticks every 2 battle ticks (1 second), dealing 1 HP per stack while ignoring block. Stacks last for the battle; stacks added on a poison-pulse tick count immediately. Healing restores HP immediately, up to max HP. The "How it works" panel in the shop summarises these rules in the game itself.
 
 ## Current starter features
 
