@@ -6,6 +6,10 @@ As a player, I want to sell items from my backpack for half their price (rounded
 
 Gold never becomes negative, an item I pay for always ends up in my backpack, and an item is never lost or duplicated by buying or selling. Every action either completes fully or changes nothing. When an action is not possible, the interface tells me why before I try it, and the same rule also protects the action itself. Shop and backpack actions are only possible while I am shopping.
 
+>- Added atomic `sellItem` and `rerollShop` run logic; every action is protected by a blocker function, which the interface also uses to explain unavailable purchases and rerolls.
+>- Buying is now blocked while the backpack is full, so a paid item can no longer be lost.
+>- Items are sold through the existing backpack selection; a reroll replaces all offers, including sold ones, and advances the run's seed.
+
 ## B2 — Backpack arrangement (15%)
 
 As a player, I want to arrange my backpack. I can select an item, see that it is selected, and move it to another slot. Moving onto an occupied slot swaps the two items. The interface shows which moves are possible, and I can cancel a selection.

@@ -23,8 +23,10 @@ A won battle gives +1 win, a lost battle costs one life. The run ends with a vic
 ### Shop and backpack
 
 - The shop shows **4 offers**, rolled from the catalog at the start of every round. The same offer may appear more than once.
-- **Buy** pays the price and puts the item into the first free slot of the backpack. A bought offer is marked as sold until the next round.
-- The backpack is a **2×3 grid** (2 columns, 3 rows, 6 slots), and every item takes exactly one slot. A bought item stays in its slot for the whole run. Hover over an item to see its details.
+- **Buy** pays the price and puts the item into the first free slot of the backpack. Buying needs enough gold and a free slot. A bought offer is marked as sold until the next round or reroll.
+- **Reroll** replaces all four offers, including sold ones, for 1 🪙.
+- **Sell** a selected backpack item for half its price, rounded down.
+- The backpack is a **2×3 grid** (2 columns, 3 rows, 6 slots), and every item takes exactly one slot. Select an item to move it to another slot, swap it with another item or sell it. Hover over an item to see its details.
 - Only items in the backpack fight. Their position in the grid does not matter.
 
 Shop rolls are driven by a seeded random number generator stored in the run state, so the same seed always produces the same offers.
@@ -72,8 +74,8 @@ Burn ticks every battle tick (0.5 seconds), dealing 2 damage per stack; block ab
 
 - A start page, a shop page, a battle page and a result page, each with its own URL.
 - A run with rounds, gold, lives and wins, ending in victory or defeat.
-- A seeded shop with buying.
-- A fixed 2×3 backpack grid with item tooltips.
+- A seeded shop with buying, selling and rerolling.
+- A 2×3 backpack grid with movable items and tooltips.
 - A deterministic battle simulation with damage, block, poison, healing, Burn and set bonuses.
 - A replayed battle view with HP, block and status indicators, set badges and bonuses, a timer, a combat log and a skip button.
 - A delayed local opponent API with success and failure responses.

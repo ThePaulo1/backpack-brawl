@@ -1,6 +1,7 @@
 import { TICK_SECONDS } from "../battle";
 import { describeEffects, getItem } from "../items";
 import { EFFECT_HELP } from "../rules";
+import { sellPrice } from "../run";
 import { activeItemSets, ITEM_SETS } from "../sets";
 import { BACKPACK_COLS } from "../shop";
 import type { Backpack as BackpackSlots, ItemDef } from "../types";
@@ -18,10 +19,12 @@ const tooltip = (item: ItemDef) =>
 interface BackpackProps {
   backpack: BackpackSlots;
   onMove: (fromIndex: number, toIndex: number) => void;
+  onSell: (slotIndex: number) => void;
 }
 
-export function Backpack({ backpack, onMove }: BackpackProps) {
+export function Backpack({ backpack, onMove, onSell }: BackpackProps) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const selectedSlot = selectedIndex === null ? null : backpack[selectedIndex];
   const activeSets = activeItemSets(backpack.flatMap((slot) => (slot ? [getItem(slot.itemId)] : [])));
 
   function handleSlot(index: number) {
@@ -33,11 +36,16 @@ export function Backpack({ backpack, onMove }: BackpackProps) {
     }
   }
 
+  function handleSell(index: number) {
+    onSell(index);
+    setSelectedIndex(null);
+  }
+
   return (
     <section className="rounded-lg border border-panel-edge bg-panel p-4">
       <h2 className="font-display text-xl font-bold">🎒 Backpack</h2>
       <p className="mb-2 text-sm text-muted">
-        {selectedIndex === null ? "Select an item, then choose a destination slot." : "Selected: choose an empty or occupied slot."}
+        {selectedIndex === null ? "Select an item to move or sell it." : "Selected: choose an empty or occupied slot, or sell the item."}
       </p>
       <ul className="mb-3 flex flex-wrap gap-2 text-xs" aria-label="Active set bonuses">
         {activeSets.length === 0 && <li className="text-muted">No set bonus active</li>}
@@ -48,13 +56,24 @@ export function Backpack({ backpack, onMove }: BackpackProps) {
         ))}
       </ul>
       {selectedIndex !== null && (
-        <button
-          type="button"
-          onClick={() => setSelectedIndex(null)}
-          className="mb-3 rounded-md border border-panel-edge px-3 py-1 text-sm hover:border-gold"
-        >
-          Cancel selection
-        </button>
+        <div className="mb-3 flex flex-wrap gap-2">
+          {selectedSlot && (
+            <button
+              type="button"
+              onClick={() => handleSell(selectedIndex)}
+              className="rounded-md bg-gold px-3 py-1 text-sm font-bold text-ink hover:brightness-110"
+            >
+              Sell for {sellPrice(selectedSlot.itemId)} 🪙
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={() => setSelectedIndex(null)}
+            className="rounded-md border border-panel-edge px-3 py-1 text-sm hover:border-gold"
+          >
+            Cancel selection
+          </button>
+        </div>
       )}
       <ul className="grid gap-2" style={{ gridTemplateColumns: `repeat(${BACKPACK_COLS}, minmax(0, 1fr))` }}>
         {backpack.map((slot, index) => {

@@ -8,7 +8,7 @@ import {
   POISON_TICK_INTERVAL,
   TICK_SECONDS,
 } from "./battle";
-import { GOLD_PER_ROUND, START_GOLD, START_LIVES, WINS_TO_VICTORY } from "./run";
+import { GOLD_PER_ROUND, REROLL_COST, START_GOLD, START_LIVES, WINS_TO_VICTORY } from "./run";
 import {
   FIRE_COOLDOWN_REDUCTION,
   FIRE_ITEM_COOLDOWN,
@@ -63,8 +63,9 @@ export const RULES: RuleSection[] = [
     title: "🏪 Shop & backpack",
     rules: [
       `You start with ${START_GOLD} 🪙 and earn ${GOLD_PER_ROUND} 🪙 at the start of every new round. Unspent gold carries over.`,
-      `The shop offers ${SHOP_SIZE} new items every round.`,
-      `Bought items go to the first free slot of your ${BACKPACK_COLS}×${BACKPACK_ROWS} backpack and stay there for the whole run.`,
+      `The shop offers ${SHOP_SIZE} new items every round. Reroll all offers, including sold ones, for ${REROLL_COST} 🪙 each time.`,
+      `Bought items go to the first free slot of your ${BACKPACK_COLS}×${BACKPACK_ROWS} backpack; you need a free slot to buy.`,
+      `Select an item in your backpack to move it or sell it for half its price, rounded down.`,
       `Only items in your backpack fight. Their position doesn't matter.`,
       `Collect ${ITEM_SET_THRESHOLD} or more items from a set to activate its bonus; duplicate items count.`,
       `Fire bonus: Fire items recharge ${FIRE_COOLDOWN_REDUCTION} tick sooner. Guardian bonus: start battle with ${GUARDIAN_STARTING_BLOCK} extra block.`,
