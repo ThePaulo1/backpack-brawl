@@ -55,6 +55,10 @@ As a player, I want looking for an opponent to be reliable. While a search is ru
 
 A battle is only ever started for the current round and the current search. A slow, duplicate or late response must never restart a battle, start a battle outside a search, or apply a result twice.
 
+>- Every search has a unique `searchId`; responses from any other search, or outside the searching phase, are ignored.
+>- A search can only start from the shop; its button is disabled while searching.
+>- Failures, unreachable APIs, timeouts (10 s) and opponents for a wrong round return to the shop with a message and allow a retry.
+
 ## B6 — Save and resume (10%)
 
 As a player, I want to refresh the browser and continue my run where I left it, on the matching screen. Your team decides which state is meaningful for continuing a run and stores it in the browser.

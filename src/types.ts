@@ -129,6 +129,8 @@ export interface GameState {
   run: RunState;
   /** Set while `phase === "battle"`. */
   battle: BattleReplay | null;
+  /** Identifies the running search; set while `phase === "searching"`. */
+  searchId: symbol | null;
   /** Last opponent-search error, shown in the shop. */
   error: string | null;
 }

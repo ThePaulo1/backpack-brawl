@@ -75,4 +75,4 @@ Example: `API_FAIL=true pnpm server`.
 
 ## Client
 
-`fetchOpponent(round)` in `src/api.ts` performs the request. It resolves with the `Opponent` on success and throws an `Error` carrying the server's `error` text (or a generic message with the status code) for any non-2xx response. When the API is not running, the Vite proxy answers with an error status of its own, which is reported the same way; a network failure rejects as well.
+`fetchOpponent(round)` in `src/api.ts` performs the request. It resolves with the `Opponent` on success and throws an `Error` carrying the server's `error` text (or a generic message with the status code) for any non-2xx response. When the API is not running, the Vite proxy answers with an error status of its own, which is reported the same way. A network failure, an unreadable response or a search longer than 10 seconds throws "The arena could not be reached." The client ignores responses that do not belong to the current search, and rejects an opponent for another round.
