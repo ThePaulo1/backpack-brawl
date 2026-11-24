@@ -1,5 +1,6 @@
 import cors from "cors";
 import express from "express";
+import { listEntries, submitEntry } from "./hallOfFame.js";
 import { opponentForRound, parseRound } from "./opponents.js";
 
 const app = express();
@@ -20,5 +21,15 @@ app.get("/api/opponents", (req, res) => {
     res.json(opponentForRound(round));
   }, latency);
 });
+
+app.get("/api/hall-of-fame", (_req, res) => res.json(listEntries()));
+
+app.post("/api/hall-of-fame", (req, res) => {
+  const { status, body } = submitEntry(req.body);
+  res.status(status).json(body);
+});
+
+// Answers unreadable request bodies with JSON like every other error.
+app.use((error, _req, res, _next) => res.status(error.status ?? 500).json({ error: "The request could not be read" }));
 
 app.listen(port, () => console.log(`Backpack Brawl API listening on http://localhost:${port}`));

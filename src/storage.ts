@@ -5,7 +5,7 @@ import { BACKPACK_SIZE, itemIdsOf, SHOP_SIZE } from "./shop";
 import type { BattleReplay, GameState, Opponent, Phase, RunState } from "./types";
 
 /** Increase the version when the saved format changes; older saves are then ignored. */
-const STORAGE_KEY = "backpack-brawl-run-v1";
+const STORAGE_KEY = "backpack-brawl-run-v2";
 
 /** The battle itself is not saved: it is simulated again from the backpack and the opponent. */
 interface SavedGame {
@@ -59,6 +59,8 @@ const isIntBetween = (value: number, min: number, max = Number.MAX_SAFE_INTEGER)
   Number.isSafeInteger(value) && value >= min && value <= max;
 
 function checkRun(run: RunState): void {
+  check(typeof run.id === "string" && run.id !== "");
+  check(run.submitted === false || (run.submitted === true && runOutcome(run) !== null));
   check(isIntBetween(run.round, 1));
   check(isIntBetween(run.gold, 0));
   check(isIntBetween(run.wins, 0, WINS_TO_VICTORY));

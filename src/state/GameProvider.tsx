@@ -16,7 +16,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
   const value: GameContextValue = {
     game,
-    startNewRun: () => setGame(newGame(randomSeed())),
+    startNewRun: () => setGame(newGame(randomSeed(), `${Date.now()}-${randomSeed()}`)),
     update: (transition) => setGame((current) => (current ? transition(current) : current)),
   };
 

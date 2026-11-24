@@ -1,7 +1,16 @@
+import type { ReactNode } from "react";
 import type { RunOutcome } from "../run";
 import type { RunState } from "../types";
 
-export function RunOver({ run, outcome, onNewRun }: { run: RunState; outcome: RunOutcome; onNewRun: () => void }) {
+interface RunOverProps {
+  run: RunState;
+  outcome: RunOutcome;
+  onNewRun: () => void;
+  /** Extra content above the new-run button, e.g. the submission form. */
+  children?: ReactNode;
+}
+
+export function RunOver({ run, outcome, onNewRun, children }: RunOverProps) {
   const victory = outcome === "victory";
   return (
     <section
@@ -15,7 +24,8 @@ export function RunOver({ run, outcome, onNewRun }: { run: RunState; outcome: Ru
         {run.wins} {run.wins === 1 ? "win" : "wins"} in {run.round} {run.round === 1 ? "round" : "rounds"}, {run.lives}{" "}
         {run.lives === 1 ? "life" : "lives"} left.
       </p>
-      <button type="button" onClick={onNewRun} autoFocus className="rounded-md bg-gold px-5 py-2 font-display font-bold text-ink hover:brightness-110">
+      {children}
+      <button type="button" onClick={onNewRun} className="rounded-md bg-gold px-5 py-2 font-display font-bold text-ink hover:brightness-110">
         🎒 New run
       </button>
     </section>

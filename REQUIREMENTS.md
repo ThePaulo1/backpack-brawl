@@ -77,6 +77,11 @@ The API validates every submitted run and rejects invalid or implausible data wi
 
 Storing the entries in memory on the server is sufficient; a database is not required.
 
+>- Added `GET` and `POST /api/hall-of-fame`; the API validates every field and checks that the run ended and its rounds match its wins and lost lives.
+>- Every run has a unique `id`. The API stores each id once, and the client saves a `submitted` flag, so retries and refreshes never create a second entry.
+>- Added a name form on the result page that keeps the name after a failure, and a `/hall-of-fame` page with loading, empty, error and retry states; the player's own run is highlighted.
+>- Order: more wins (5 wins = victory), then fewer rounds, then earlier submission.
+
 ## Qualitative requirements and team decisions
 
 In addition to the functional requirements, your team must define a small set of qualitative goals for your solution. Choose goals that are relevant to your implementation and the way you expect the application to be used.

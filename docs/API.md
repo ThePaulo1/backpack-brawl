@@ -1,6 +1,6 @@
 # Backpack Brawl API
 
-The local API is a small Express server in `server/index.js`. It listens on port 4200 (override with the `PORT` environment variable). During Vite development, `/api` is proxied to it, so the frontend uses relative URLs such as `/api/opponents?round=1`. All responses are JSON. The server keeps no state: restarting it changes nothing about the answers.
+The local API is a small Express server in `server/index.js`. It listens on port 4200 (override with the `PORT` environment variable). During Vite development, `/api` is proxied to it, so the frontend uses relative URLs such as `/api/opponents?round=1`. All responses are JSON. Only the hall of fame keeps state, in memory: restarting the server empties it.
 
 ## `GET /api/health`
 
@@ -63,6 +63,36 @@ Every error response has the shape:
 
 An invalid `round` is reported as 400 even when failure is forced. All responses from this endpoint, errors included, arrive after the configured delay.
 
+## `GET /api/hall-of-fame`
+
+Answers with status 200 and all submitted runs, best first: more wins, then fewer rounds, then earlier submission. The list is empty (`[]`) until a run is submitted.
+
+```json
+[{ "runId": "1764000000000-123456789", "name": "Petar", "wins": 5, "rounds": 6, "lives": 2 }]
+```
+
+## `POST /api/hall-of-fame`
+
+Submits a finished run as JSON (`Content-Type: application/json`).
+
+| Field | Type | Rule |
+|---|---|---|
+| `runId` | string | 1–64 characters, unique per run |
+| `name` | string | 1–20 characters, surrounding spaces are removed |
+| `wins` | number | Whole number 0–5 |
+| `lives` | number | Whole number 0–3, lives left at the end |
+| `rounds` | number | Must equal `wins` plus lost lives (`3 − lives`) |
+
+The run must be over: either 5 wins (victory) or 0 lives (defeat), not both.
+
+| Status | When | Body |
+|---|---|---|
+| 201 | The run was stored | The stored entry |
+| 200 | This `runId` was already submitted; nothing changes | The entry stored first |
+| 400 | A field is invalid, the run is implausible or the JSON is unreadable | `{ "error": "…" }` naming the problem |
+
+The API checks that a run is possible, but cannot prove that it was actually played.
+
 ## Environment variables
 
 | Variable | Effect |
@@ -75,4 +105,6 @@ Example: `API_FAIL=true pnpm server`.
 
 ## Client
 
-`fetchOpponent(round)` in `src/api.ts` performs the request. It resolves with the `Opponent` on success and throws an `Error` carrying the server's `error` text (or a generic message with the status code) for any non-2xx response. When the API is not running, the Vite proxy answers with an error status of its own, which is reported the same way. A network failure, an unreadable response or a search longer than 10 seconds throws "The arena could not be reached." The client ignores responses that do not belong to the current search, and rejects an opponent for another round.
+`fetchHallOfFame()` and `submitRun(run, name)` in `src/api.ts` use the hall of fame with the same error handling as below.
+
+`fetchOpponent(round)` in `src/api.ts` performs the request. It resolves with the `Opponent` on success and throws an `Error` carrying the server's `error` text (or a generic message with the status code) for any non-2xx response. When the API is not running, the Vite proxy answers with an error status of its own, which is reported the same way. A network failure, an unreadable response or a request longer than 10 seconds throws "The arena could not be reached." The client ignores responses that do not belong to the current search, and rejects an opponent for another round.

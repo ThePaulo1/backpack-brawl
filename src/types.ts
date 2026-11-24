@@ -34,6 +34,10 @@ export type ShopOffers = (string | null)[];
 export type Phase = "shop" | "searching" | "battle" | "finished";
 
 export interface RunState {
+  /** Identifies the run, so it enters the hall of fame only once. */
+  id: string;
+  /** Whether the finished run was sent to the hall of fame. */
+  submitted: boolean;
   round: number;
   gold: number;
   lives: number;
@@ -53,6 +57,15 @@ export interface Opponent {
   hp: number;
   round: number;
   items: string[];
+}
+
+/** A finished run as the API stores it. */
+export interface HallOfFameEntry {
+  runId: string;
+  name: string;
+  wins: number;
+  rounds: number;
+  lives: number;
 }
 
 export type Side = "player" | "opponent";

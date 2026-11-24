@@ -1,10 +1,12 @@
 import { RunHeader } from "../components/RunHeader";
 import { RunOver } from "../components/RunOver";
+import { SubmitRun } from "../components/SubmitRun";
+import { markSubmitted } from "../game";
 import { runOutcome } from "../run";
 import { useActiveGame } from "../state/GameContext";
 
 export function ResultPage() {
-  const { game, startNewRun } = useActiveGame();
+  const { game, startNewRun, update } = useActiveGame();
   const outcome = runOutcome(game.run);
   if (!outcome) return null;
 
@@ -12,7 +14,9 @@ export function ResultPage() {
   return (
     <>
       <RunHeader run={game.run} />
-      <RunOver run={game.run} outcome={outcome} onNewRun={startNewRun} />
+      <RunOver run={game.run} outcome={outcome} onNewRun={startNewRun}>
+        <SubmitRun run={game.run} onSubmitted={() => update((current) => markSubmitted(current, game.run.id))} />
+      </RunOver>
     </>
   );
 }

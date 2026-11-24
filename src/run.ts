@@ -8,9 +8,11 @@ export const WINS_TO_VICTORY = 5;
 export const GOLD_PER_ROUND = 5;
 export const REROLL_COST = 1;
 
-export function newRun(seed: number): RunState {
+export function newRun(seed: number, id: string): RunState {
   const roll = rollShop(seed);
   return {
+    id,
+    submitted: false,
     round: 1,
     gold: START_GOLD,
     lives: START_LIVES,

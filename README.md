@@ -22,6 +22,8 @@ A won battle gives +1 win, a lost battle costs one life. The run ends with a vic
 
 The run is saved in the browser (`localStorage`). Refreshing during a search returns to the shop with the same offers and gold; refreshing during a battle resumes the same battle with the same result. Saved data that is malformed or describes an impossible run is ignored, and the game starts without a run.
 
+After the last round you can enter your name once per run for the hall of fame. Runs are ranked by wins (5 wins = victory), then fewer rounds, then earlier submission. The API keeps them in memory until it restarts.
+
 ### Shop and backpack
 
 - The shop shows **4 offers**, rolled from the catalog at the start of every round. The same offer may appear more than once.
@@ -81,6 +83,7 @@ Burn ticks every battle tick (0.5 seconds), dealing 2 damage per stack; block ab
 - A deterministic battle simulation with damage, block, poison, healing, Burn and set bonuses.
 - A replayed battle view with HP, block and status indicators, set badges and bonuses, a timer, a combat log and a skip button.
 - A saved run that can be continued after a refresh.
+- A hall of fame page with submission, loading, empty, error and retry states.
 - A delayed local opponent API with success and failure responses.
 - Tooltips and a rules panel explaining every mechanic.
 - A responsive React interface styled with Tailwind CSS.
@@ -111,6 +114,8 @@ The web app runs at `http://localhost:5174`; its API runs at `http://localhost:4
 
 - `GET /api/health`
 - `GET /api/opponents?round=1`
+- `GET /api/hall-of-fame`
+- `POST /api/hall-of-fame`
 
 The opponent for each round is fixed. Add `?latency=2500` to change the delay (default 1200 ms, at most 5000 ms) or `?fail=true` to force a failed request. Starting the server with `API_FAIL=true` makes every opponent request fail.
 
@@ -128,8 +133,8 @@ Game rules live in plain TypeScript modules that do not depend on React. Every r
 - `src/game.ts` contains the phase transitions of a run (`shop → searching → battle → shop … → finished`), the replay steps and the mapping from phase to page.
 - `src/storage.ts` saves the run in the browser and validates it when loading.
 - `src/rules.ts` builds the rule explanations and tooltips from the game constants.
-- `src/api.ts` contains the opponent HTTP request.
+- `src/api.ts` contains the HTTP requests.
 - `src/state/` holds the game state for all pages (`GameProvider`, `useGame`) and `RequireRoute`, which redirects every page to the one matching the current phase.
 - `src/pages/` contains one component per screen; `src/App.tsx` defines the routes.
 - `src/components/` contains the presentational parts: run header, shop, backpack, item card, rules panel, fight bar, battle view and end-of-run screen.
-- `server/index.js` implements the local API; `server/opponents.js` contains the opponent table.
+- `server/index.js` implements the local API; `server/opponents.js` contains the opponent table; `server/hallOfFame.js` validates, stores and ranks finished runs.
