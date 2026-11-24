@@ -65,6 +65,10 @@ As a player, I want to refresh the browser and continue my run where I left it, 
 
 Saved data that is malformed, incompatible or describes an impossible run must not break the game; the game falls back to a playable state. Your team defines and communicates a policy for a refresh during a search or a battle replay. Refreshing must not become a way to get a free reroll, a different opponent, a second result, or to avoid a loss.
 
+>- Run, phase, opponent and replay frame are stored in `localStorage` on every change and validated on load; malformed, incompatible or impossible saves are ignored.
+>- Refreshing during a search returns to the shop with unchanged offers and seed. Refreshing during a battle simulates the same battle again and continues at the saved frame, so the result stays the same and is applied once.
+>- The start page offers to continue a saved run; the refresh policy is explained in the rules panel and README.
+
 ## B7 — Hall of fame (20%)
 
 As a player, I want to enter my name at the end of a run and see how it compares with other runs. Finished runs are sent to the local API, which stores them and lists the best runs in an order your team defines and shows (for example: victories first, then more wins, then fewer rounds).

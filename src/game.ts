@@ -1,7 +1,7 @@
 import { buildOpponentFighter, buildPlayerFighter, simulateBattle } from "./battle";
 import { applyBattleResult, newRun, runOutcome } from "./run";
 import { itemIdsOf } from "./shop";
-import type { BattleReplay, GameState, Opponent, RunState } from "./types";
+import type { Backpack, BattleReplay, GameState, Opponent, RunState } from "./types";
 
 /**
  * Phase transitions of one run: shop → searching → battle → shop … → finished.
@@ -40,14 +40,18 @@ export function searchFailed(game: GameState, searchId: symbol, error: string): 
   return { ...game, phase: "shop", searchId: null, error };
 }
 
+/** Simulates the battle; deterministic, so a saved battle can be rebuilt after a refresh. */
+export function buildReplay(backpack: Backpack, opponent: Opponent, frame = 0): BattleReplay {
+  const player = buildPlayerFighter(backpack);
+  const enemy = buildOpponentFighter(opponent);
+  return { opponent, player, enemy, result: simulateBattle(player, enemy), frame };
+}
+
 /** Simulates the battle and starts its replay; ignored unless `searchId` is the running search. */
 export function startBattle(game: GameState, searchId: symbol, opponent: Opponent): GameState {
   if (!isCurrentSearch(game, searchId)) return game;
   if (opponent.round !== game.run.round) return searchFailed(game, searchId, "The opponent was for a different round.");
-  const player = buildPlayerFighter(game.run.backpack);
-  const enemy = buildOpponentFighter(opponent);
-  const result = simulateBattle(player, enemy);
-  return { ...game, phase: "battle", searchId: null, battle: { opponent, player, enemy, result, frame: 0 } };
+  return { ...game, phase: "battle", searchId: null, battle: buildReplay(game.run.backpack, opponent) };
 }
 
 export const isReplayDone = (battle: BattleReplay) => battle.frame >= battle.result.frames.length - 1;

@@ -20,6 +20,8 @@ A run is a series of rounds. Every round you shop, then fight one opponent.
 
 A won battle gives +1 win, a lost battle costs one life. The run ends with a victory screen after the fifth win, or a game-over screen when the last life is gone. Unspent gold and the whole backpack carry over from round to round. Opponents get tougher every round.
 
+The run is saved in the browser (`localStorage`). Refreshing during a search returns to the shop with the same offers and gold; refreshing during a battle resumes the same battle with the same result. Saved data that is malformed or describes an impossible run is ignored, and the game starts without a run.
+
 ### Shop and backpack
 
 - The shop shows **4 offers**, rolled from the catalog at the start of every round. The same offer may appear more than once.
@@ -78,6 +80,7 @@ Burn ticks every battle tick (0.5 seconds), dealing 2 damage per stack; block ab
 - A 2×3 backpack grid with movable items and tooltips.
 - A deterministic battle simulation with damage, block, poison, healing, Burn and set bonuses.
 - A replayed battle view with HP, block and status indicators, set badges and bonuses, a timer, a combat log and a skip button.
+- A saved run that can be continued after a refresh.
 - A delayed local opponent API with success and failure responses.
 - Tooltips and a rules panel explaining every mechanic.
 - A responsive React interface styled with Tailwind CSS.
@@ -123,6 +126,7 @@ Game rules live in plain TypeScript modules that do not depend on React. Every r
 - `src/run.ts` contains the run rules: starting values, buying, round progression and win/loss.
 - `src/battle.ts` turns item lists into fighters and contains the battle simulation (`simulateBattle`).
 - `src/game.ts` contains the phase transitions of a run (`shop → searching → battle → shop … → finished`), the replay steps and the mapping from phase to page.
+- `src/storage.ts` saves the run in the browser and validates it when loading.
 - `src/rules.ts` builds the rule explanations and tooltips from the game constants.
 - `src/api.ts` contains the opponent HTTP request.
 - `src/state/` holds the game state for all pages (`GameProvider`, `useGame`) and `RequireRoute`, which redirects every page to the one matching the current phase.
