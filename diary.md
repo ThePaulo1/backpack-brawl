@@ -1,7 +1,12 @@
 # Practical Exam - Development Diary
 
-Team members:
-Repository:
+We split the requirements by area and committed each requirement separately on `master`.
+
+**Team members:**
+
+**Repository:** https://github.com/ThePaulo1/backpack-brawl
+
+**Not implemented:** None
 
 ## 1. Qualitative Goals
 
@@ -36,32 +41,18 @@ To match the scope of a browser-based single-player game and keep the codebase e
 - **Alternatives Considered:** Maintaining separate type definitions which risks silent contract drift when extending types.
 - **Trade-offs:** Requires running/type-checking the server with TypeScript support, and compile-time types do not protect against invalid runtime HTTP requests so the Express server still performs explicit runtime validation on eg `POST /api/hall-of-fame`.
 
-### Decision 3: TBD
+### Decision 3: Unique ID per opponent search
 
-## 3. Team Conventions & UI Guidelines
+- **Decision:** A response only starts a battle if its search ID matches the running search so late or duplicate responses never start or restart a battle.
+- **Alternatives Considered:** Checking only the round (fails when a new run starts during a search), cancelling requests (answers that already arrived still apply).
+- **Trade-offs:** Requires clearing the active ID on resets or new runs and old requests still finish in the background before being ignored.
 
-### UI & Design Consistency
+## 3. Team Conventions
 
-- **No New Design System:** Build strictly on top of the existing Tailwind CSS styling and component patterns.
-- **Consistent Patterns:** Display new status effects alongside HP/block using the same visual language, show set memberships via compact badges on existing item cards, and explain every new rule in `RulesPanel` and hover tooltips.
+- **UI:** No new design system; we reuse the existing Tailwind styles, badges and tooltips or apply the same visual language
+- **Commits:** `type(scope): imperative description`, lowercase, under about 72 characters, scope `b1`–`b7`. Types: `feat`, `fix`, `refactor`, `docs`, `chore`.
 
-### Git Commit Convention
-
-Format: `<type>(<scope>): <imperative description>`
-
-- Lowercase, imperative mood (`add`, `fix`, `update` — not `added` or `adds`)
-- Under ~72 characters
-- Use `b1`–`b7` as the scope for exam requirements, or a component/tool name for setup
-
-| Type       | When to use it                                           | Example                                                            |
-| :--------- | :------------------------------------------------------- | :----------------------------------------------------------------- |
-| `feat`     | New game mechanic, UI feature, or API endpoint           | `feat(b1): allow selling backpack items for half price`            |
-| `fix`      | Bug fix in logic, state transitions, or UI               | `fix(b5): ignore late opponent responses after cancel`             |
-| `test`     | Adding or updating Vitest unit tests (`*.test.ts`)       | `test(b3): add poison stacking and heal cap tests`                 |
-| `refactor` | Restructuring code without changing behavior             | `refactor(battle): extract status effect tick processor`           |
-| `docs`     | Documentation updates (`docs/API.md`, qualitative notes) | `docs(b7): document hall of fame endpoints in API.md`              |
-| `chore`    | Tooling, config, dependencies, or dev environment        | `chore(devcontainer): add devcontainer setup and expose vite host` |
-
+  Example: `feat(b1): add item selling and shop reroll; block buying when full`
 
 ## 4. Work Organization
 
@@ -73,14 +64,12 @@ We divided the requirements by functional area and shared file ownership to mini
 
 ## 5. AI Usage
 
-We used agentic coding tools as a development accelerator while retaining full human ownership over architecture, game-balance constants and design decisions. Specifically AI assistance was used to:
-
-- Scaffold boilerplate code and TypeScript interfaces faster.
-- Review React components and state transitions for adherence to React best practices and edge-case handling.
-- Cross-check requirements coverage and documentation consistency.
-
-All generated code was manually reviewed, tested, and adapted to fit our qualitative goals and existing project structure.
+We used coding agents as a tool to work faster, for example to write code and documentation for the requirements we planned. We reviewed every change by hand, tested it in the game and adapted it where needed. Rules, trade-offs and design decisions were made by us
 
 ## 6. Final Reflection & Lessons Learned
 
-TBD
+- **Teamwork:** Splitting the requirements by area worked well: we didn't change the same files at once and one commit per requirement kept the history easy to follow.
+- **Hardest part:** Not the game rules but the edge cases: slow or late API responses (B5) and save data that can be broken or edited (B6). The interface alone cannot protect the game; every rule also has to protect itself.
+- **What paid off:** Keeping the rules in pure TypeScript functions. Selling, saving and the hall of fame could reuse the same checks, and the code stayed easy to explain.
+- **AI:** The coding agent made us faster but only because we reviewed and tested every change. Its suggestions sometimes went beyond the requirements, so we kept the scope small on purpose.
+- **Next time:** We would add a few automated tests for the core rules early on. Checking edge cases by hand took more time and is easy to forget after later changes.
